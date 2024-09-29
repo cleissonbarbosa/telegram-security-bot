@@ -1,2 +1,3 @@
+python-telegram-bot==21.6
+git+https://github.com/c-goosen/py-googletrans.git@master#egg=googletrans
 requests
-python-telegram-bot 
