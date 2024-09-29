@@ -75,8 +75,9 @@ async def start(update: Update, _context: CallbackContext):
 
     await update.message.reply_text(
         "Welcome to the Exploits and Security Notifications Bot!\n"
-        "Use /exploit <CVE-ID> to search for a vulnerability.\n"
-        "Use /recent to see recent vulnerabilities."
+        "Use /exploit <b><CVE-ID></b> <i><LANG><i> to search for a vulnerability.\n"
+        "Use /recent <i><LANG><i> to see recent vulnerabilities.",
+        parse_mode=ParseMode.HTML
     )
 
 
