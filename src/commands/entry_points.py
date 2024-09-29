@@ -45,9 +45,9 @@ async def exploit(update: Update, context: CallbackContext):
         else:
             await update.message.reply_text(f"🔍 {info} ...")
 
-        resultado = await search_exploit(vuln_id, language)
-        logging.info(f"Search result: {resultado}")
-        await update.message.reply_text(resultado, parse_mode=ParseMode.HTML)
+        result = await search_exploit(vuln_id, language)
+        logging.info(f"Search result: {result}")
+        await update.message.reply_text(result, parse_mode=ParseMode.HTML)
     else:
         logging.warning("No vulnerability ID provided.")
         error_msg = "Please provide a vulnerability ID (eg: /exploit CVE-2021-34527)."
@@ -74,10 +74,10 @@ async def start(update: Update, _context: CallbackContext):
     logging.info("Received /start command.")
 
     await update.message.reply_text(
-        "Welcome to the Exploits and Security Notifications Bot!\n"
-        "Use /exploit <b><CVE-ID></b> <i><LANG><i> to search for a vulnerability.\n"
-        "Use /recent <i><LANG><i> to see recent vulnerabilities.",
-        parse_mode=ParseMode.HTML
+        "Welcome to the Exploits and Security Notifications Bot!\n\n"
+        "Use /exploit *<CVE-ID>* _<LANG>_ to search for a vulnerability.\n"
+        "Use /recent _<LANG>_ to see recent vulnerabilities.",
+        parse_mode=ParseMode.MARKDOWN
     )
 
 
