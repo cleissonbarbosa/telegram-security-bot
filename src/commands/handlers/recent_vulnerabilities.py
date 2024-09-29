@@ -21,6 +21,6 @@ async def recent_vulnerabilities() -> str:
             mensagens = [f"{vuln['id']}: {vuln['summary']}" for vuln in data]
             return "\n\n".join(mensagens)
         else:
-            return "It was not possible to fetch the recent vulnerabilities."
+            return "❌ It was not possible to fetch the recent vulnerabilities. 😕"
     except Exception as e:
-        return f"Error scanning for vulnerabilities: {str(e)}"
+        return f"❌ Error scanning for vulnerabilities: {str(e)}"

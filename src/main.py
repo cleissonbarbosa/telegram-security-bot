@@ -2,7 +2,7 @@ from telegram.ext import Application, CommandHandler
 
 from commands.entry_points import start, exploit, recent_vuln
 
-# Coloque o token do seu bot aqui
+# Put your bot token here
 TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
 
 
@@ -14,7 +14,7 @@ def main():
     application.add_handler(CommandHandler("exploit", exploit))
     application.add_handler(CommandHandler("recent", recent_vuln))
 
-    # Iniciar o bot
+    # Start bot
     application.run_polling()
 
 
