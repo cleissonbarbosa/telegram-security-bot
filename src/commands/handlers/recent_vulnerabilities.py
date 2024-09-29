@@ -11,7 +11,7 @@ async def recent_vulnerabilities(language: str = "en") -> str:
     This asynchronous function makes a GET request to the CVE API to retrieve the
     most recent vulnerabilities. It processes the response to extract and format
     the top 5 vulnerabilities into a readable string.
-    
+
     Args:
         language (str): The language to translate the response to (default is "en").
 
@@ -26,7 +26,10 @@ async def recent_vulnerabilities(language: str = "en") -> str:
         if response.status_code == 200:
             logging.info("Recent vulnerabilities fetched successfully.")
             data = response.json()[:5]  # Get the top 5 most recent vulnerabilities
-            mensagens = [f"<b>{vuln['id']}</b>: {vuln['summary']}" for vuln in data]
+            mensagens = [
+                f"<b><a href='https://www.cve.org/CVERecord?id={vuln['id']}'>{vuln['id']}</a></b>: {vuln['summary'][:250]}..."
+                for vuln in data
+            ]
             result = "\n\n".join(mensagens)
 
             if language != "en":
