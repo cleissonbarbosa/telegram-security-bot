@@ -40,7 +40,7 @@ async def exploit(update: Update, context: CallbackContext):
 
         info = "Searching for exploit information"
         if language != "en":
-            translated_info = translator.translate(error_msg, dest=language).text
+            translated_info = translator.translate(info, dest=language).text
             await update.message.reply_text(f"🔍 {translated_info} ...")
         else:
             await update.message.reply_text(f"🔍 {info} ...")
