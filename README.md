@@ -1,68 +1,68 @@
-# Bot de Exploits e Notificações de Segurança
+# Security Exploits and Notifications Bot
 
-Este é um bot Telegram que permite aos usuários buscar vulnerabilidades usando o CVE (Common Vulnerabilities and Exposures) e receber notificações sobre vulnerabilidades de segurança recentes.
+This is a Telegram bot that allows users to search for vulnerabilities using the CVE (Common Vulnerabilities and Exposures) and receive notifications about recent security vulnerabilities.
 
-## Funcionalidades
-- **/exploit `<CVE-ID>`**: Busca detalhes de uma vulnerabilidade específica por ID, incluindo descrição e referências.
-- **/recent**: Retorna uma lista das vulnerabilidades mais recentes disponíveis.
-- **/start**: Exibe uma mensagem de boas-vindas e instruções de uso.
+## Features
+- **/exploit `<CVE-ID>`**: Searches for details of a specific vulnerability by ID, including description and references.
+- **/recent**: Returns a list of the most recent vulnerabilities available.
+- **/start**: Displays a welcome message and usage instructions.
 
 ---
 
-## Como Criar um Bot e Obter um Token
+## How to Create a Bot and Obtain a Token 🛠️
 
-Para usar este bot, você precisa criar o seu próprio bot no Telegram e obter o token de acesso. Siga os passos abaixo:
+To use this bot, you need to create your own bot on Telegram and obtain the access token. Follow the steps below:
 
-1. **Acesse o Telegram** e procure pelo bot chamado [BotFather](https://t.me/BotFather).
-2. **Inicie uma conversa com o BotFather** enviando `/start`.
-3. **Crie um novo bot** enviando o comando `/newbot` e siga as instruções fornecidas. Você precisará escolher um nome e um nome de usuário para o seu bot.
-4. Após criar o bot, o BotFather fornecerá um **Token de API**. O token terá um formato parecido com este: `123456789:ABCdefGhIJKlmnOPqRsTuVWXyz`.
+1. **Access Telegram** and search for the bot called [BotFather](https://t.me/BotFather).
+2. **Start a conversation with BotFather** by sending `/start`.
+3. **Create a new bot** by sending the command `/newbot` and follow the provided instructions. You will need to choose a name and a username for your bot.
+4. After creating the bot, BotFather will provide an **API Token**. The token will look something like this: `123456789:ABCdefGhIJKlmnOPqRsTuVWXyz`.
 
-### Como Usar o Token no Código
-Substitua `YOUR_TELEGRAM_BOT_TOKEN` no código pelo token que você obteve do BotFather:
+### How to Use the Token in the Code
+Replace `YOUR_TELEGRAM_BOT_TOKEN` in the code with the token you obtained from BotFather:
 ```python
 TELEGRAM_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
 ```
 
 ---
 
-## Como Executar o Bot
+## How to Run the Bot 🚀
 
-#### 1. Clonar o Repositório
+#### 1. Clone the Repository
 ```bash
 git clone https://github.com/cleissonbarbosa/telegram-security-bot
 cd telegram-security-bot
 ```
 
-#### 2. Instalar Dependências:
-Certifique-se de que você tenha o Python instalado e então execute:
+#### 2. Install Dependencies:
+Make sure you have Python installed and then run:
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 3. Executar o Bot: 
-Após configurar o token e instalar as dependências, você pode rodar o bot com o seguinte comando:
+#### 3. Run the Bot: 
+After configuring the token and installing the dependencies, you can run the bot with the following command:
 ```bash
 python src/main.py
 ```
 
 ---
 
-## Melhorias Futuras
+## Future Improvements 🔮
 
-- [ ] Adicionar suporte para pesquisar vulnerabilidades por palavras-chave.
-- [ ] Notificações automáticas de vulnerabilidades em intervalos definidos.
-- [ ] Integração com outras APIs de segurança.
-- [ ] Filtros avançados para buscas de CVE.
-
----
-
-## Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests com sugestões ou melhorias.
+- [ ] Add support for searching vulnerabilities by keywords.
+- [ ] Automatic notifications of vulnerabilities at defined intervals.
+- [ ] Integration with other security APIs.
+- [ ] Advanced filters for CVE searches.
 
 ---
 
-## Licença
+## Contributions 🤝
 
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para obter mais detalhes.
+Contributions are welcome! Feel free to open issues and pull requests with suggestions or improvements.
+
+---
+
+## License 📜
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
