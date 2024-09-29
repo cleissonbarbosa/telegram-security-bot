@@ -1,3 +1,5 @@
+import logging
+
 import requests
 
 
@@ -17,10 +19,13 @@ async def recent_vulnerabilities() -> str:
     try:
         response = requests.get("https://cve.circl.lu/api/last")
         if response.status_code == 200:
+            logging.info("Recent vulnerabilities fetched successfully.")
             data = response.json()[:5]  # Get the top 5 most recent vulnerabilities
             mensagens = [f"{vuln['id']}: {vuln['summary']}" for vuln in data]
             return "\n\n".join(mensagens)
         else:
+            logging.error("Error fetching recent vulnerabilities.")
             return "❌ It was not possible to fetch the recent vulnerabilities. 😕"
     except Exception as e:
+        logging.error(f"Error fetching recent vulnerabilities: {str(e)}")
         return f"❌ Error scanning for vulnerabilities: {str(e)}"

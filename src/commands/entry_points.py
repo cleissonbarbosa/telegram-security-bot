@@ -1,3 +1,5 @@
+import logging
+
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -23,11 +25,14 @@ async def exploit(update: Update, context: CallbackContext):
         - If no vulnerability ID is provided, it prompts the user to provide one.
     """
     if context.args:
+        logging.info(f"Searching for exploit information for {context.args[0]}")
         await update.message.reply_text("🔍 Searching for exploit information...")
         vuln_id = context.args[0]
         resultado = await search_exploit(vuln_id)
+        logging.info(f"Search result: {resultado}")
         await update.message.reply_text(resultado)
     else:
+        logging.warning("No vulnerability ID provided.")
         await update.message.reply_text(
             "❌ Please provide a vulnerability ID (ex: /exploit CVE-2021-34527)."
         )
@@ -46,6 +51,7 @@ async def start(update: Update, _context: CallbackContext):
     Returns:
         None
     """
+    logging.info("Received /start command.")
     await update.message.reply_text(
         "Welcome to the Exploits and Security Notifications Bot!\n"
         "Use /exploit <CVE-ID> to search for a vulnerability.\n"
@@ -67,6 +73,10 @@ async def recent_vuln(update: Update, _context: CallbackContext) -> None:
     Returns:
         None
     """
+    logging.info("Received /recent_vuln command.")
     await update.message.reply_text("🔍 Fetching recent vulnerabilities...")
+    
     result = recent_vulnerabilities()
+    
+    logging.info(f"Recent vulnerabilities: {result}")
     await update.message.reply_text(result)
