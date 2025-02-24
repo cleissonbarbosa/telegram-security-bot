@@ -2,46 +2,45 @@ import logging
 import requests
 from datetime import datetime, timedelta
 from googletrans import Translator
-from utils.cache import recent_vulns_cache
-from config import DEFAULT_PAGE_SIZE, NIST_API_BASE_URL
+from utils.cache import search_cache
+from config import NIST_API_BASE_URL, DEFAULT_PAGE_SIZE
 
 
-async def recent_vulnerabilities(
-    language: str = "en", page: int = 1, per_page: int = DEFAULT_PAGE_SIZE
+async def search_vulnerabilities(
+    query: str, language: str = "en", page: int = 1, per_page: int = DEFAULT_PAGE_SIZE
 ) -> str:
     """
-    Fetches the most recent vulnerabilities from the NIST NVD API.
+    Search for vulnerabilities using keywords.
 
     Args:
-        language (str): The language to translate the response to (default is "en")
-        page (int): The page number (default is 1)
-        per_page (int): Number of items per page (default is 5)
+        query (str): The search query
+        language (str): The language to translate the response to
+        page (int): The page number
+        per_page (int): Number of items per page
     """
     translator = Translator()
-    cache_key = f"recent_{language}_{page}"
+    cache_key = f"search_{query}_{language}_{page}"
 
     # Check cache first
-    cached_result = recent_vulns_cache.get(cache_key)
+    cached_result = search_cache.get(cache_key)
     if cached_result:
         return cached_result
 
     try:
-        # Calculate dates for last 15 days
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=15)
-
         # Calculate pagination
         start_index = (page - 1) * per_page
 
         # Make request to NIST API
         url = f"{NIST_API_BASE_URL}/cves/2.0"
         params = {
-            "pubStartDate": start_date.strftime("%Y-%m-%dT%H:%M:%S.000"),
-            "pubEndDate": end_date.strftime("%Y-%m-%dT%H:%M:%S.000"),
+            "keywordSearch": query,
             "resultsPerPage": per_page,
             "startIndex": start_index,
         }
 
+        logging.info(
+            f"Searching vulnerabilities: {url}?{'&'.join([f'{k}={v}' for k,v in params.items()])}"
+        )
         response = requests.get(url, params=params, timeout=30)
 
         if response.status_code == 200:
@@ -51,7 +50,7 @@ async def recent_vulnerabilities(
 
             if not vulnerabilities:
                 return await handle_error(
-                    "No vulnerabilities found for this period", language
+                    f"No vulnerabilities found matching '{query}'", language
                 )
 
             # Format messages
@@ -78,7 +77,8 @@ async def recent_vulnerabilities(
                     severity = ""
                     if cvss_v3:
                         base_score = cvss_v3.get("baseScore", "")
-                        severity = f"(CVSS: {base_score})"
+                        severity_level = cvss_v3.get("baseSeverity", "")
+                        severity = f"(CVSS: {base_score} - {severity_level})"
 
                     message = (
                         f"<b><a href='https://nvd.nist.gov/vuln/detail/{vuln_id}'>"
@@ -95,19 +95,22 @@ async def recent_vulnerabilities(
 
             # Add pagination info
             total_pages = (total_results + per_page - 1) // per_page
-            pagination_info = f"\n\nPage {page}/{total_pages} • Total: {total_results} vulnerabilities"
+            pagination_info = (
+                f"\n\nSearch results for '{query}'\n"
+                f"Page {page}/{total_pages} • Total: {total_results} vulnerabilities"
+            )
             result = "\n\n".join(mensagens) + pagination_info
 
             if language != "en":
                 result = translator.translate(result, dest=language).text
 
             # Cache the result
-            recent_vulns_cache.set(cache_key, result)
+            search_cache.set(cache_key, result)
             return result
 
         else:
             error_msg = (
-                f"Failed to fetch vulnerabilities. Status code: {response.status_code}"
+                f"Failed to search vulnerabilities. Status code: {response.status_code}"
             )
             return await handle_error(error_msg, language)
 
@@ -116,7 +119,7 @@ async def recent_vulnerabilities(
         return await handle_error(error_msg, language)
 
     except Exception as e:
-        error_msg = f"Error scanning for vulnerabilities: {str(e)}"
+        error_msg = f"Error searching vulnerabilities: {str(e)}"
         return await handle_error(error_msg, language)
 
 

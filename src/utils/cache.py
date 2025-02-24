@@ -1,5 +1,5 @@
-from functools import lru_cache
 from datetime import datetime, timedelta
+from config import CACHE_EXPLOIT, CACHE_RECENT_VULNS, CACHE_STATS, CACHE_SEARCH
 
 class ExpiringCache:
     def __init__(self, expiration_time=300):  # 5 minutos default
@@ -17,7 +17,8 @@ class ExpiringCache:
     def set(self, key, value):
         self.cache[key] = (value, datetime.now())
 
-# Cache para vulnerabilidades recentes
-recent_vulns_cache = ExpiringCache(300)  # 5 minutos
-exploit_cache = ExpiringCache(3600)  # 1 hora
-stats_cache = ExpiringCache(1800)  # 30 minutos - adicionado para estatísticas 
+# Cache instances
+recent_vulns_cache = ExpiringCache(CACHE_RECENT_VULNS)
+exploit_cache = ExpiringCache(CACHE_EXPLOIT)
+stats_cache = ExpiringCache(CACHE_STATS)
+search_cache = ExpiringCache(CACHE_SEARCH)

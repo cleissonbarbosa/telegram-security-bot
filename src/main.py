@@ -2,10 +2,15 @@ import logging
 
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler
 
-from commands.entry_points import start, exploit, recent_vuln, handle_pagination, stats
-
-# Put your bot token here
-TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+from commands.entry_points import (
+    start,
+    exploit,
+    recent_vuln,
+    handle_pagination,
+    stats,
+    search,
+)
+from config import TELEGRAM_TOKEN
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -21,7 +26,8 @@ def main():
     application.add_handler(CommandHandler("exploit", exploit))
     application.add_handler(CommandHandler("recent", recent_vuln))
     application.add_handler(CommandHandler("stats", stats))
-    
+    application.add_handler(CommandHandler("search", search))
+
     # Callback query handler for pagination
     application.add_handler(CallbackQueryHandler(handle_pagination))
 
