@@ -177,6 +177,8 @@ async def search(update: Update, context: CallbackContext):
 # Update help message
 async def start(update: Update, context: CallbackContext):
     """Enhanced start command with more information"""
+    translator = Translator()
+    language = "en"
     help_text = (
         "🤖 <b>Security Vulnerability Bot</b>\n\n"
         "Available commands:\n"
@@ -192,8 +194,17 @@ async def start(update: Update, context: CallbackContext):
         "/recent fr 2\n"
         "/stats 30 de"
     )
+    
+    if context.args:
+        if len(context.args) >= 1:
+            language = context.args[0]
 
-    await update.message.reply_text(help_text, parse_mode=ParseMode.HTML)
+    if language not in SUPPORTED_LANGUAGES or language == "en":
+        await update.message.reply_text(help_text, parse_mode=ParseMode.HTML)
+    elif language in SUPPORTED_LANGUAGES:
+        translated_fetching_msg = translator.translate(help_text, dest=language).text
+        await update.message.reply_text(translated_fetching_msg, parse_mode=ParseMode.HTML)
+        
 
 
 async def recent_vuln(update: Update, context: CallbackContext) -> None:
